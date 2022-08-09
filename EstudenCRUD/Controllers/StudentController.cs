@@ -96,7 +96,7 @@ namespace EstudenCRUD.Controllers
                                
                 db.SaveChanges();
 
-                return new Response { Data = dbStudent, Message = "Estudiante Actulizado!", Success = true };
+                return new Response { Data = dbStudent, Message = "Estudiante Actualizado!", Success = true };
             }
             catch (System.Exception)
             {
@@ -104,6 +104,27 @@ namespace EstudenCRUD.Controllers
                 return new Response { Success = false, Message = "Error al ejecutar la tarea, consulte al administrador" };
             }
 
+        }
+
+        [HttpDelete]
+        public Response DeleteStudent(int id)
+        {
+            try
+            {
+                Estudents student = new Estudents { IdStudent = id };
+
+                db.Estudents.Remove(student);
+
+                db.SaveChanges();
+
+                return new Response { Message = "Estudiante Eliminado!", Success = true };
+
+            }
+            catch (Exception)
+            {
+
+                return new Response { Success = false, Message = "Error al ejecutar la tarea, consulte al administrador" };
+            }
         }
         public IActionResult Index()
         {

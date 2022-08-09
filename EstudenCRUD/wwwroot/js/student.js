@@ -80,7 +80,10 @@ async function updateStudent() {
     }).then(response => response.json())
         .then(
             data => {
-                alert(data.message)
+                Swal.fire({
+                    title: data.message,
+                    icon: 'success'
+                })
                 var tBodyRef = document.getElementById('student').getElementsByTagName('tbody')[0].innerHTML = '';
 
                 document.getElementById('NombreAdd').value = '';
@@ -117,7 +120,11 @@ async function inserStudent() {
     }).then(response => response.json())
         .then(
             data => {
-                alert(data.message)
+                Swal.fire({
+                    title: data.message,
+                    icon:'success'
+                })
+                
                 var tBodyRef = document.getElementById('student').getElementsByTagName('tbody')[0].innerHTML='';
 
                 document.getElementById('NombreAdd').value = ''; 
@@ -132,6 +139,46 @@ async function inserStudent() {
     
     return;
     
+}
+
+async function removeStudent(idStudent) {
+    fetch('https://localhost:44338/Student/DeleteStudent/' + idStudent, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }       
+    }).then(response => response.json())
+        .then(
+            data => {
+                Swal.fire({
+                    title: data.message,
+                    icon: 'success'
+                })
+                var tBodyRef = document.getElementById('student').getElementsByTagName('tbody')[0].innerHTML = '';
+
+                document.getElementById('NombreAdd').value = '';
+                document.getElementById('ApellidoAdd').value = '';
+
+                loadStudent();
+
+                $('#modalAdd').modal('hide');
+            }
+        )
+}
+
+async function delStudent(idStudent) {
+    Swal.fire({
+        title: 'Desea eliminar al estudiante?',
+        showDenyButton: true,
+        denyButtonText: 'No',
+        confirmButtonText: 'Si'
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                removeStudent(idStudent);
+            }
+
+        })
 }
 
 
