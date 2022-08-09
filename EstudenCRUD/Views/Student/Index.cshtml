@@ -9,13 +9,18 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalAdd">Registrando Estudiante</h5>
+        <h5 class="modal-title" id="modalAddTitle">Registrando Estudiante</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form>
+            <div class="form-group d-none" id="idGroup">
+                <label for="idStudend">Id</label>
+                <input type="text" class="form-control" readonly id="idStudent">    
+           </div>
+
             <div class="form-group">
                 <label for="NombreAdd">Nombre</label>
                 <input type="text" class="form-control" id="NombreAdd">    
@@ -30,13 +35,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" onclick="inserStudent()">Guardar</button>
+        <button type="button" id="btnGuardar" class="btn btn-success" onclick="inserStudent()">Guardar</button>
       </div>
     </div>
   </div>
 </div>
 
-<button class="btn btn-success" data-toggle="modal" data-target="#modalAdd" type="button">Agregar Estudiante</button>
+<button class="btn btn-success" onclick="showModalAdd()" type="button">Agregar Estudiante</button>
 <hr />
 
 <table id="student" class="table table-bordered">

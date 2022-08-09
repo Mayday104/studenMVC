@@ -1,6 +1,31 @@
-﻿async function editStudent(idStudent) {
+﻿function showModalAdd() {
+    $('#modalAddTitle').html("Registrando Estudiantes");
+    $('#idGroup').addClass('d-none');
+    $('#modalAdd').modal('show');
+    $('#btnGuardar').html('Guardar'); 
+    $('#btnGuardar').attr('onclick', 'inserStudent()');
+    $('#ApellidoAdd').val('');
+    $('#NombreAdd').val('');
+}
 
-    alert(idStudent);
+async function editStudent(idStudent) {
+    $('#modalAddTitle').html("Editando Estudiantes");
+    $('#idGroup').removeClass('d-none');
+    $('#btnGuardar').html('Actualizar');
+    $('#btnGuardar').attr('onclick', 'updateStudent()');
+
+
+    fetch('https://localhost:44338/Student/GetStudentById/'+idStudent)
+        .then(response => response.json())
+        .then(data => {
+            $('#idStudent').val(data.data.idStudent);
+            $('#NombreAdd').val(data.data.nombre);
+            $('#ApellidoAdd').val(data.data.apellido);            
+
+            $('#modalAdd').modal('show');
+        })
+
+
 }
 
 function addRow(student) {
@@ -29,6 +54,44 @@ async function loadStudent() {
         })
 }
 
+
+async function updateStudent() {
+    var idStudent = document.getElementById('idStudent').value;
+    var nombre = document.getElementById('NombreAdd').value;
+    var apellido = document.getElementById('ApellidoAdd').value;
+
+    if (nombre.trim() === '' || apellido.trim() === '' ) {
+        alert('Nombre y Apellido son datos requeridos');
+        return;
+    }
+
+    var student = {
+        Nombre: nombre,
+        Apellido: apellido
+    }
+
+
+    fetch('https://localhost:44338/Student/EditStudent/'+idStudent, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(student)
+    }).then(response => response.json())
+        .then(
+            data => {
+                alert(data.message)
+                var tBodyRef = document.getElementById('student').getElementsByTagName('tbody')[0].innerHTML = '';
+
+                document.getElementById('NombreAdd').value = '';
+                document.getElementById('ApellidoAdd').value = '';
+
+                loadStudent();
+
+                $('#modalAdd').modal('hide');
+            }
+        )
+}
 
 async function inserStudent() {
 

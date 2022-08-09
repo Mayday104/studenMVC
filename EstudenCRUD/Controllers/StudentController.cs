@@ -28,6 +28,26 @@ namespace EstudenCRUD.Controllers
             }
         }
 
+        [HttpGet]
+        public Response GetStudentById(int id)
+        {
+            try
+            {
+                Estudents student = db.Estudents.Find(id);
+                if (student == null)
+                {
+                    return new Response { Success = false, Message = "Recurso no encontrado" };
+                }
+
+                return new Response { Data = student, Success = true };
+            }
+            catch (Exception)
+            {
+
+                return new Response { Success = false, Message = "Error al ejecutar la tarea, consulte al administrador" };
+            }
+        }
+
 
         [HttpPost]
         public Response InserStudent([FromBody]Estudents student)
@@ -53,7 +73,38 @@ namespace EstudenCRUD.Controllers
             }
         }
 
+        [HttpPut]
+        public Response EditStudent(int id, [FromBody]Estudents student)
+        {
 
+            Estudents dbStudent= db.Estudents.Find(id);
+
+            if (dbStudent == null)
+            {
+                return new Response { Success = false, Message = "Recurso no encontrado" };
+            }
+
+            if (student.Apellido.Trim().Equals("") || student.Nombre.Trim().Equals(""))
+            {
+                return new Response { Success = false, Message = "No se suministraron todos los datos necesarios" };
+            }
+
+            try
+            {
+                dbStudent.Apellido = student.Apellido;
+                dbStudent.Nombre = student.Nombre;
+                               
+                db.SaveChanges();
+
+                return new Response { Data = dbStudent, Message = "Estudiante Actulizado!", Success = true };
+            }
+            catch (System.Exception)
+            {
+
+                return new Response { Success = false, Message = "Error al ejecutar la tarea, consulte al administrador" };
+            }
+
+        }
         public IActionResult Index()
         {
             return View();
