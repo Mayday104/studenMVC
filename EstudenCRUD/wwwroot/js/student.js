@@ -50,7 +50,24 @@ async function loadStudent() {
     fetch('https://localhost:44338/Student/GetStudent')
         .then(response => response.json())
         .then(data => {            
-              data.data.forEach(addRow)
+            $('#student').DataTable({
+                data: data.data,
+                columns: [
+                    { data: 'idStudent' },
+                    { data: 'nombre' },
+                    { data: 'apellido' },
+                    {
+                        data: 'idStudent',
+                        render: function (data, type) {
+                            return `<button class="btn btn-primary mx-1" onclick="editStudent(${data})">Editar</button><button class="btn btn-danger mx-1" onclick="delStudent(${data})")>Eliminar</button>`
+                        }
+                    }
+
+                ],
+                "bDestroy": true
+            });
+
+              //data.data.forEach(addRow)
         })
 }
 
